@@ -5,6 +5,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'https://quantbot-backend.onren
 
 const ConfigForm = ({ onRunBacktest, isLoading }) => {
   const [dataOptions, setDataOptions] = useState([]);
+  const [selectedContext, setSelectedContext] = useState('');
   const [formData, setFormData] = useState({
     initial_balance: 10000,
     risk_percentage: 1,
@@ -19,6 +20,11 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
       .then(response => response.json())
       .then(data => {
         setDataOptions(data.data_options);
+        // Set initial context
+        const initialOption = data.data_options.find(option => option.id === formData.data_source);
+        if (initialOption) {
+          setSelectedContext(initialOption.context);
+        }
       })
       .catch(error => {
         console.error('Error fetching data options:', error);
@@ -31,6 +37,14 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
       ...prevState,
       [name]: value
     }));
+    
+    // Update context when data source changes
+    if (name === 'data_source') {
+      const selectedOption = dataOptions.find(option => option.id === value);
+      if (selectedOption) {
+        setSelectedContext(selectedOption.context);
+      }
+    }
   };
 
   const handleSubmit = (e) => {
@@ -66,6 +80,12 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
               <option key={option.id} value={option.id}>{option.name}</option>
             ))}
           </select>
+          
+          {selectedContext && (
+            <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-md">
+              <p className="text-sm text-blue-800 dark:text-blue-300">{selectedContext}</p>
+            </div>
+          )}
         </div>
         
         <div className="space-y-2">
