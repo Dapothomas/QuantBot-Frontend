@@ -60,7 +60,7 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
             value={formData.data_source}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-800/60 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
             {dataOptions.map(option => (
               <option key={option.id} value={option.id}>{option.name}</option>
@@ -81,7 +81,7 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
             value={formData.initial_balance}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-800/60  border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
         
@@ -99,7 +99,7 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
             value={formData.risk_percentage}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 bg-white dark:bg-gray-800/60 border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
         
@@ -117,7 +117,7 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
               value={formData.k_period}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-gray-800/60 border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           
@@ -134,7 +134,7 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
               value={formData.d_period}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-gray-800/60 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
         </div>

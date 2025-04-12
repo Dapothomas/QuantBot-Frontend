@@ -87,7 +87,7 @@ const TradeHistory = ({ trades }) => {
       
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-800">
+          <thead className="bg-gray-50 dark:bg-gray-800/70">
             <tr>
               <th 
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
@@ -169,7 +169,7 @@ const TradeHistory = ({ trades }) => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-gray-700 divide-y divide-gray-200 dark:divide-gray-800">
+          <tbody className="bg-white dark:bg-gray-700/60 divide-y divide-gray-200 dark:divide-gray-800">
             {sortedTrades.map((trade, index) => (
               <tr key={index}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">{formatDate(trade.entry_time)}</td>
