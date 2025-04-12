@@ -91,13 +91,13 @@ const StrategyInfo = () => {
               <li>Easy to interpret and implement</li>
               <li>Works well in ranging markets</li>
               <li>Can generate high-probability trade signals</li>
+              <li>Effective for identifying potential reversals</li>
+              <li>Helps determine market momentum and trend strength</li>
             </ul>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-lg p-5 shadow">
             <h4 className="text-lg font-medium text-red-600 dark:text-red-400 mb-2">Cons</h4>
             <ul className="list-disc pl-5 space-y-1 text-gray-700 dark:text-gray-300">
-              <li>Can generate false signals in trending markets</li>
-              <li>Works best when combined with other indicators</li>
               <li>Requires proper parameter tuning for different assets</li>
             </ul>
           </div>
