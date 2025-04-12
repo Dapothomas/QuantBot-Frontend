@@ -7,7 +7,7 @@ import StrategyInfo from './components/StrategyInfo';
 // No need for App.css import as we'll use Tailwind
 
 // Get API URL from environment variable or use default
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API_URL = process.env.REACT_APP_API_URL || 'https://quantbot-backend.onrender.com';
 
 function App() {
   const [activeTab, setActiveTab] = useState('backtest');
