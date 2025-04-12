@@ -286,8 +286,17 @@ function App() {
         <div className="container mx-auto flex justify-between items-center">
           <p>&copy; {new Date().getFullYear()} Stochastic Oscillator Trading Bot</p>
           <div className="flex space-x-4">
-            <a href="#" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Documentation</a>
-            <a href="#" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">GitHub</a>
+            <a 
+              href="https://github.com/Dapothomas" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center"
+            >
+              <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.477 2 2 6.477 2 12C2 16.418 4.865 20.166 8.84 21.49C9.34 21.58 9.52 21.27 9.52 21C9.52 20.77 9.51 20.14 9.51 19.31C7 19.91 6.35 18.57 6.15 18C6.037 17.702 5.537 17 5 17C4.56 17 4.06 17.39 5.1 17.4C6.1 17.41 6.7 18.1 6.9 18.41C7.938 19.927 9.4 18.04 9.54 17.76C9.63 17.11 9.89 16.67 10.17 16.42C7.95 16.17 5.62 15.31 5.62 11.5C5.62 10.39 6.01 9.5 6.91 8.81C6.81 8.56 6.46 7.61 7.01 6.21C7.01 6.21 7.98 5.94 9.51 7.09C10.3 6.85 11.15 6.74 12 6.74C12.85 6.74 13.7 6.85 14.49 7.09C16.01 5.94 16.98 6.21 16.98 6.21C17.53 7.61 17.18 8.56 17.08 8.81C17.98 9.5 18.37 10.39 18.37 11.5C18.37 15.32 16.04 16.16 13.82 16.41C14.17 16.72 14.5 17.33 14.5 18.26C14.5 19.6 14.49 20.68 14.49 21C14.49 21.27 14.67 21.58 15.17 21.49C19.135 20.16 22 16.419 22 12C22 6.477 17.523 2 12 2Z" fill="currentColor"/>
+              </svg>
+              GitHub
+            </a>
           </div>
         </div>
       </footer>
