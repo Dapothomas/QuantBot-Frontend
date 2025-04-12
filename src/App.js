@@ -75,7 +75,7 @@ function App() {
 
   return (
     <div 
-      className="min-h-screen transition-colors duration-200 dark:text-white"
+      className="min-h-screen flex flex-col transition-colors duration-200 dark:text-white"
       style={{
         backgroundImage: darkMode 
           ? "url('/images/blackimg.jpg')" 
@@ -174,7 +174,7 @@ function App() {
         )}
       </header>
       
-      <main className="container mx-auto p-4">
+      <main className="container mx-auto p-4 flex-grow">
         {activeTab === 'backtest' && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div className="lg:col-span-1 bg-white/90 dark:bg-gray-800/30 backdrop-blur-lg p-4 rounded-lg shadow">
@@ -238,7 +238,7 @@ function App() {
         )}
       </main>
       
-      <footer className="bg-white/80 dark:bg-gray-800/30 backdrop-blur-lg p-4 mt-8 text-center text-gray-600 dark:text-gray-400">
+      <footer className="bg-white/80 dark:bg-gray-800/30 backdrop-blur-lg p-4 mt-auto text-center text-gray-600 dark:text-gray-400">
         <p>&copy; {new Date().getFullYear()} Stochastic Oscillator Trading Bot</p>
       </footer>
     </div>
