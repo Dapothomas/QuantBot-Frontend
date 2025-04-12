@@ -4,6 +4,7 @@ import PriceChart from './components/PriceChart';
 import ConfigForm from './components/ConfigForm';
 import TradeHistory from './components/TradeHistory';
 import StrategyInfo from './components/StrategyInfo';
+import MonthlyBalanceChart from './components/MonthlyBalanceChart';
 // No need for App.css import as we'll use Tailwind
 
 // Get API URL from environment variable or use default
@@ -204,6 +205,18 @@ function App() {
                       <PriceChart 
                         chartData={backtestResults.chart_data} 
                         trades={backtestResults.trades} 
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/90 dark:bg-gray-800/30 backdrop-blur-lg p-4 rounded-lg shadow">
+                    <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+                      Monthly Balance Progression
+                    </h2>
+                    <div className="bg-white/95 dark:bg-gray-800/55 backdrop-blur-md overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
+                      <MonthlyBalanceChart 
+                        trades={backtestResults.trades} 
+                        initialBalance={backtestResults.initialBalance} 
                       />
                     </div>
                   </div>
