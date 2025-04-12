@@ -284,7 +284,7 @@ function App() {
       
       <footer className="bg-white/80 dark:bg-gray-800/30 backdrop-blur-lg p-4 mt-auto text-center text-gray-600 dark:text-gray-400">
         <div className="container mx-auto flex justify-between items-center">
-          <p>&copy; {new Date().getFullYear()} Stochastic Oscillator Trading Bot</p>
+          <p>&copy; {new Date().getFullYear()} DT's Quant<span className="text-indigo-600 dark:text-indigo-400">Trader</span></p>
           <div className="flex space-x-4">
             <a 
               href="https://github.com/Dapothomas" 
