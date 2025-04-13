@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const TradeHistory = ({ trades }) => {
+const TradeHistory = ({ trades, initialBalance = 10000 }) => {
   const [sortField, setSortField] = useState('entry_time');
   const [sortDirection, setSortDirection] = useState('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [tradesWithBalance, setTradesWithBalance] = useState([]);
+  
+  useEffect(() => {
+    if (trades && trades.length > 0) {
+      // Calculate running balance for each trade
+      let runningBalance = initialBalance;
+      const updatedTrades = trades.map((trade, index) => {
+        runningBalance += trade.profit;
+        return {
+          ...trade,
+          runningBalance: runningBalance
+        };
+      });
+      setTradesWithBalance(updatedTrades);
+    }
+  }, [trades, initialBalance]);
   
   if (!trades || trades.length === 0) {
     return <div className="text-center py-4 text-gray-500 dark:text-gray-400">No trades available</div>;
@@ -19,7 +35,7 @@ const TradeHistory = ({ trades }) => {
     }
   };
   
-  const sortedTrades = [...trades].sort((a, b) => {
+  const sortedTrades = [...tradesWithBalance].sort((a, b) => {
     let aValue = a[sortField];
     let bValue = b[sortField];
     
@@ -225,6 +241,19 @@ const TradeHistory = ({ trades }) => {
                   )}
                 </div>
               </th>
+              <th 
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
+                onClick={() => handleSort('runningBalance')}
+              >
+                <div className="flex items-center">
+                  Total Balance
+                  {sortField === 'runningBalance' && (
+                    <span className="ml-1 text-indigo-600 dark:text-indigo-400">
+                      {sortDirection === 'asc' ? '▲' : '▼'}
+                    </span>
+                  )}
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
@@ -258,6 +287,10 @@ const TradeHistory = ({ trades }) => {
                   }`}>
                     {trade.trade_result.toUpperCase()}
                   </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 font-medium">
+                  <div className="md:hidden font-semibold text-xs text-gray-500 dark:text-gray-400">Balance:</div>
+                  ${trade.runningBalance.toFixed(2)}
                 </td>
               </tr>
             ))}

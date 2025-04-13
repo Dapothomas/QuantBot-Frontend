@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 
-const PriceChart = ({ chartData, trades }) => {
+const StochasticOscillator = ({ chartData }) => {
   const chartContainerRef = useRef();
   const chartRef = useRef();
   const isDarkMode = document.documentElement.classList.contains('dark');
+  const [chartRendered, setChartRendered] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
@@ -18,9 +19,9 @@ const PriceChart = ({ chartData, trades }) => {
     // Create new chart with theme based on dark mode
     const chart = createChart(chartContainerRef.current, {
       width: chartContainerRef.current.clientWidth,
-      height: 600, // Increased height
+      height: 250, // Shorter height for the indicator
       layout: {
-        backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+        backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : 'rgba(255, 255, 255, 0.8)',
         textColor: isDarkMode ? '#d1d5db' : '#333',
         fontFamily: 'Poppins, sans-serif',
       },
@@ -38,11 +39,14 @@ const PriceChart = ({ chartData, trades }) => {
         timeVisible: true,
         secondsVisible: false,
         borderColor: isDarkMode ? '#374151' : '#e5e7eb',
-        borderVisible: true,
         tickMarkFormatter: (time) => {
           const date = new Date(time * 1000);
           return date.getDate() + '/' + (date.getMonth() + 1);
         },
+      },
+      rightPriceScale: {
+        borderColor: isDarkMode ? '#374151' : '#e5e7eb',
+        borderVisible: true,
       },
       crosshair: {
         mode: 1,
@@ -59,80 +63,12 @@ const PriceChart = ({ chartData, trades }) => {
           labelBackgroundColor: isDarkMode ? '#374151' : '#f3f4f6',
         },
       },
-      rightPriceScale: {
-        borderColor: isDarkMode ? '#374151' : '#e5e7eb',
-        borderVisible: true,
-        scaleMargins: {
-          top: 0.1,
-          bottom: 0.2,
-        },
-      },
-      handleScroll: {
-        vertTouchDrag: true,
-      },
-      handleScale: {
-        axisPressedMouseMove: true,
-        mouseWheel: true,
-        pinch: true,
-      },
     });
     
-    // Add price series
-    const priceSeries = chart.addCandlestickSeries({
-      upColor: isDarkMode ? '#10b981' : '#26a69a',
-      downColor: isDarkMode ? '#ef4444' : '#ef5350',
-      borderUpColor: isDarkMode ? '#10b981' : '#26a69a',
-      borderDownColor: isDarkMode ? '#ef4444' : '#ef5350',
-      wickUpColor: isDarkMode ? '#10b981' : '#26a69a',
-      wickDownColor: isDarkMode ? '#ef4444' : '#ef5350',
-      priceFormat: {
-        type: 'price',
-        precision: 2,
-        minMove: 0.01,
-      },
-    });
-    
-    // Format data for price chart - convert to OHLC format to show better candles
-    const priceData = [];
-    
-    // If we have many data points, create proper OHLC candles by grouping
-    if (chartData.length > 0) {
-      // Group by day for better visualization
-      const groupedData = {};
-      
-      chartData.forEach(d => {
-        const timestamp = new Date(d.timestamp);
-        const day = new Date(timestamp.getFullYear(), timestamp.getMonth(), timestamp.getDate()).getTime() / 1000;
-        
-        if (!groupedData[day]) {
-          groupedData[day] = {
-            time: day,
-            open: d.close,
-            high: d.close,
-            low: d.close,
-            close: d.close,
-          };
-        } else {
-          groupedData[day].high = Math.max(groupedData[day].high, d.close);
-          groupedData[day].low = Math.min(groupedData[day].low, d.close);
-          groupedData[day].close = d.close;
-        }
-      });
-      
-      // Convert to array for the chart
-      priceData.push(...Object.values(groupedData));
-      
-      // Sort by time
-      priceData.sort((a, b) => a.time - b.time);
-    }
-    
-    priceSeries.setData(priceData);
-    
-    // Add stochastic oscillator
+    // Add stochastic oscillator lines
     const kSeries = chart.addLineSeries({
       color: isDarkMode ? '#3b82f6' : '#2196F3',
       lineWidth: 2,
-      priceScaleId: 'stochastic',
       title: '%K Line',
       lastValueVisible: true,
     });
@@ -140,56 +76,53 @@ const PriceChart = ({ chartData, trades }) => {
     const dSeries = chart.addLineSeries({
       color: isDarkMode ? '#f97316' : '#FF5722',
       lineWidth: 2,
-      priceScaleId: 'stochastic',
       title: '%D Line',
       lastValueVisible: true,
     });
     
-    // Create a separate price scale for the stochastic oscillator
-    chart.priceScale('stochastic').applyOptions({
-      scaleMargins: {
-        top: 0.8,
-        bottom: 0,
-      },
-      visible: true,
-      borderColor: isDarkMode ? '#374151' : '#e5e7eb',
-      borderVisible: true,
-      entireTextOnly: true,
-      autoScale: true,
+    // Add overbought/oversold areas
+    const overboughtArea = chart.addAreaSeries({
+      lineColor: 'transparent',
+      topColor: isDarkMode ? 'rgba(239, 68, 68, 0.2)' : 'rgba(239, 68, 68, 0.1)',
+      bottomColor: 'transparent',
+    });
+    
+    const oversoldArea = chart.addAreaSeries({
+      lineColor: 'transparent',
+      topColor: 'transparent',
+      bottomColor: isDarkMode ? 'rgba(16, 185, 129, 0.2)' : 'rgba(16, 185, 129, 0.1)',
     });
     
     // Add overbought/oversold lines
-    const overboughtSeries = chart.addLineSeries({
-      color: isDarkMode ? 'rgba(239, 68, 68, 0.5)' : 'rgba(239, 68, 68, 0.3)',
+    const overboughtLine = chart.addLineSeries({
+      color: isDarkMode ? 'rgba(239, 68, 68, 0.5)' : 'rgba(239, 68, 68, 0.5)',
       lineWidth: 1,
       lineStyle: 2, // Dashed line
-      priceScaleId: 'stochastic',
     });
     
-    const oversoldSeries = chart.addLineSeries({
-      color: isDarkMode ? 'rgba(16, 185, 129, 0.5)' : 'rgba(16, 185, 129, 0.3)',
+    const oversoldLine = chart.addLineSeries({
+      color: isDarkMode ? 'rgba(16, 185, 129, 0.5)' : 'rgba(16, 185, 129, 0.5)', 
       lineWidth: 1,
       lineStyle: 2, // Dashed line
-      priceScaleId: 'stochastic',
     });
     
     // Format data for stochastic oscillator
     const kData = chartData
-      .filter(d => d.k !== null)
+      .filter(d => d.k !== null && d.k !== undefined)
       .map(d => ({
         time: new Date(d.timestamp).getTime() / 1000,
         value: d.k,
       }));
     
     const dData = chartData
-      .filter(d => d.d !== null)
+      .filter(d => d.d !== null && d.d !== undefined)
       .map(d => ({
         time: new Date(d.timestamp).getTime() / 1000,
         value: d.d,
       }));
     
-    // Create overbought/oversold lines
-    const timeRange = priceData.map(d => d.time);
+    // Create overbought/oversold data
+    const timeRange = kData.map(d => d.time);
     const minTime = Math.min(...timeRange);
     const maxTime = Math.max(...timeRange);
     
@@ -203,44 +136,50 @@ const PriceChart = ({ chartData, trades }) => {
       { time: maxTime, value: 20 },
     ];
     
+    // Create area data for overbought/oversold regions
+    const overboughtAreaData = [
+      { time: minTime, value: 80 },
+      { time: maxTime, value: 80 },
+    ];
+    
+    const oversoldAreaData = [
+      { time: minTime, value: 20 },
+      { time: maxTime, value: 20 },
+    ];
+    
     kSeries.setData(kData);
     dSeries.setData(dData);
-    overboughtSeries.setData(overboughtData);
-    oversoldSeries.setData(oversoldData);
+    overboughtLine.setData(overboughtData);
+    oversoldLine.setData(oversoldData);
+    overboughtArea.setData(overboughtAreaData);
+    oversoldArea.setData(oversoldAreaData);
     
-    // Mark trades on the chart
-    if (trades && trades.length > 0) {
-      // Buy markers
-      const buyMarkers = trades.map(trade => ({
-        time: new Date(trade.entry_time).getTime() / 1000,
-        position: 'belowBar',
-        color: isDarkMode ? '#3b82f6' : '#2196F3',
-        shape: 'arrowUp',
-        text: 'BUY',
-        size: 2,
-      }));
-      
-      // Sell markers
-      const sellMarkers = trades.map(trade => ({
-        time: new Date(trade.exit_time).getTime() / 1000,
-        position: 'aboveBar',
-        color: trade.trade_result === 'win' 
-          ? (isDarkMode ? '#10b981' : '#4CAF50') 
-          : (isDarkMode ? '#ef4444' : '#F44336'),
-        shape: 'arrowDown',
-        text: 'SELL',
-        size: 2,
-      }));
-      
-      priceSeries.setMarkers([...buyMarkers, ...sellMarkers]);
-    }
-    
-    // Add legends as part of JSX now, so removing the DOM manipulation here
+    // No longer append legend here
     
     // Make sure the initial view fits all the data
     chart.timeScale().fitContent();
     
     chartRef.current = chart;
+    
+    // Set visible range to match the K line
+    chart.applyOptions({
+      timeScale: {
+        rightOffset: 0,
+        barSpacing: 6,
+        minBarSpacing: 5,
+        fixLeftEdge: true,
+        fixRightEdge: true,
+      },
+      rightPriceScale: {
+        scaleMargins: {
+          top: 0.1,
+          bottom: 0.1,
+        },
+        minimumHeight: 0,
+      },
+    });
+    
+    setChartRendered(true);
     
     // Cleanup on unmount
     return () => {
@@ -249,7 +188,7 @@ const PriceChart = ({ chartData, trades }) => {
         chartRef.current = null;
       }
     };
-  }, [chartData, trades, isDarkMode]);
+  }, [chartData, isDarkMode]);
   
   // Handle window resize
   useEffect(() => {
@@ -281,6 +220,8 @@ const PriceChart = ({ chartData, trades }) => {
         if (chartContainerRef.current) {
           chartContainerRef.current.innerHTML = '';
         }
+        
+        setChartRendered(false);
       }
     };
 
@@ -309,12 +250,20 @@ const PriceChart = ({ chartData, trades }) => {
   // Handle hover effects
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
+
+  if (!chartData || chartData.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-32 bg-white/90 dark:bg-gray-800/50 backdrop-blur-sm text-center">
+        <p className="text-gray-500 dark:text-gray-400">No data available to display Stochastic Oscillator</p>
+      </div>
+    );
+  }
   
   return (
     <div 
-      className={`w-full bg-white/90 dark:bg-gray-800/80 backdrop-blur-md rounded-xl shadow-lg 
-                 transition-all duration-500 ease-in-out p-4 border border-gray-100 dark:border-gray-700
-                 ${isHovered ? 'scale-[1.01] z-10 shadow-xl' : ''}`}
+      className={`w-full rounded-lg p-4 shadow-lg transition-all duration-500 ease-in-out
+                  ${isHovered ? 'scale-[1.02] z-10 shadow-xl' : ''}
+                  bg-white/90 dark:bg-gray-800/80 backdrop-blur-md border border-gray-100 dark:border-gray-700`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
@@ -324,27 +273,25 @@ const PriceChart = ({ chartData, trades }) => {
           : '',
       }}
     >
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center">
-          <svg className="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-          </svg>
-          Price Chart with Stochastic Signals
-        </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          Visualizes price movements with buy and sell signals from the Stochastic Oscillator. 
-          Hover over markers to see trade details.
-        </p>
+      <div className="flex items-center space-x-2 mb-3">
+        <svg className="w-5 h-5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 20L15 12L7 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Stochastic Oscillator</h3>
       </div>
-      
+      <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        The Stochastic Oscillator is a momentum indicator comparing a particular closing price to a range of prices over a certain period of time.
+        Buy signals occur when %K crosses above %D while below 20, and sell signals when %K crosses below %D while above 80. You can analyze this while 
+        looking at the trade history to see where and why exactly the trade was made to get a better understanding of how the strategy works.
+      </div>
       <div 
         ref={chartContainerRef} 
-        className={`w-full h-[600px] transition-all duration-300 ease-in-out
-                   ${isHovered ? 'transform scale-[1.02]' : ''}`} 
+        className={`w-full h-[250px] transition-all duration-300 ease-in-out
+                    ${isHovered ? 'transform scale-[1.02]' : ''}`}
       />
       
-      {/* Chart Legend */}
-      <div className="chart-legend flex flex-wrap items-center justify-center gap-6 text-sm mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+      {/* Legend - now part of the JSX */}
+      <div className="chart-legend flex flex-wrap items-center justify-center gap-4 text-sm mt-3 py-2 border-t border-gray-100 dark:border-gray-700">
         <div className="flex items-center">
           <span className="inline-block w-3 h-3 mr-1 rounded-full" style={{backgroundColor: isDarkMode ? '#3b82f6' : '#2196F3'}}></span>
           <span>%K (Fast)</span>
@@ -354,16 +301,16 @@ const PriceChart = ({ chartData, trades }) => {
           <span>%D (Slow)</span>
         </div>
         <div className="flex items-center">
-          <span className="inline-block w-3 h-3 mr-1 rounded-full" style={{backgroundColor: isDarkMode ? '#10b981' : '#4CAF50'}}></span>
-          <span>Buy Signal</span>
+          <span className="inline-block w-10 h-2 mr-1" style={{backgroundColor: isDarkMode ? 'rgba(239, 68, 68, 0.5)' : 'rgba(239, 68, 68, 0.5)', borderStyle: 'dashed', borderWidth: '1px'}}></span>
+          <span>Overbought (&gt;80)</span>
         </div>
         <div className="flex items-center">
-          <span className="inline-block w-3 h-3 mr-1 rounded-full" style={{backgroundColor: isDarkMode ? '#ef4444' : '#F44336'}}></span>
-          <span>Sell Signal</span>
+          <span className="inline-block w-10 h-2 mr-1" style={{backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.5)' : 'rgba(16, 185, 129, 0.5)', borderStyle: 'dashed', borderWidth: '1px'}}></span>
+          <span>Oversold (&lt;20)</span>
         </div>
       </div>
     </div>
   );
 };
 
-export default PriceChart; 
+export default StochasticOscillator; 

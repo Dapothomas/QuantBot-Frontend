@@ -5,6 +5,7 @@ import ConfigForm from './components/ConfigForm';
 import TradeHistory from './components/TradeHistory';
 import StrategyInfo from './components/StrategyInfo';
 import MonthlyBalanceChart from './components/MonthlyBalanceChart';
+import StochasticOscillator from './components/StochasticOscillator';
 // No need for App.css import as we'll use Tailwind
 
 // Get API URL from environment variable or use default
@@ -194,7 +195,7 @@ function App() {
         {activeTab === 'backtest' && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div className="lg:col-span-1">
-              <div className="sticky top-4 bg-white dark:bg-gray-800/30 rounded-xl shadow-lg p-5">
+              <div className="sticky top-4 bg-white dark:bg-gray-800/30 rounded-xl shadow-lg p-5" style={{ zIndex: 50 }}>
                 <ConfigForm onRunBacktest={runBacktest} isLoading={isLoading} />
               </div>
             </div>
@@ -231,6 +232,10 @@ function App() {
                   </div>
                   
                   <div className="bg-white dark:bg-gray-800/40 backdrop-blur-lg p-5 rounded-xl shadow-lg">
+                    <StochasticOscillator chartData={backtestResults.chart_data} />
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-800/40 backdrop-blur-lg p-5 rounded-xl shadow-lg">
                     <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center">
                       <svg className="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 9H21M9 21V9M7 3H17L21 9H3L7 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -246,7 +251,10 @@ function App() {
                   </div>
                   
                   <div className="bg-white dark:bg-gray-800/50 backdrop-blur-lg p-5 rounded-xl shadow-lg">
-                    <TradeHistory trades={backtestResults.trades} />
+                    <TradeHistory 
+                      trades={backtestResults.trades} 
+                      initialBalance={backtestResults.initialBalance} 
+                    />
                   </div>
                 </div>
               )}
