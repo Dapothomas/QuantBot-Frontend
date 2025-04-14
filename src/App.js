@@ -94,7 +94,7 @@ function App() {
               <path d="M12 3L4 9V21H20V9L12 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M16 15C16 13.9391 15.5786 12.9217 14.8284 12.1716C14.0783 11.4214 13.0609 11 12 11C10.9391 11 9.92172 11.4214 9.17157 12.1716C8.42143 12.9217 8 13.9391 8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
-            <h1 className="md:text-2xl text-lg font-bold text-gray-800 dark:text-white">DT's Quant<span className="text-indigo-600 dark:text-indigo-400">Trader</span></h1>
+            <h1 className="md:text-2xl text-lg font-bold text-gray-800 dark:text-white">DT's Quant<span className="bg-gradient-to-r from-indigo-600 to-purple-500 dark:from-indigo-400 dark:to-purple-300 text-transparent bg-clip-text">Trader</span></h1>
           </div>
           
           {/* Desktop Navigation */}
