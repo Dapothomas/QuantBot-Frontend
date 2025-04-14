@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // Get API URL from environment variable or use default
-const API_URL = process.env.REACT_APP_API_URL || 'https://quantbot-backend.onrender.com';
+const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
 
 const StrategyInfo = () => {
   const [strategyInfo, setStrategyInfo] = useState(null);

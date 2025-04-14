@@ -5,6 +5,7 @@ import ConfigForm from './components/ConfigForm';
 import TradeHistory from './components/TradeHistory';
 import StrategyInfo from './components/StrategyInfo';
 import MonthlyBalanceChart from './components/MonthlyBalanceChart';
+import StochasticOscillator from './components/StochasticOscillator';
 // No need for App.css import as we'll use Tailwind
 
 // Get API URL from environment variable or use default
@@ -228,6 +229,22 @@ function App() {
                         trades={backtestResults.trades} 
                       />
                     </div>
+                  </div>
+                  
+                  <div className="bg-white dark:bg-gray-800/40 backdrop-blur-lg p-5 rounded-xl shadow-lg">
+                    <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 20L15 12L7 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      Stochastic Oscillator
+                      <span className="text-sm ml-2 font-normal text-gray-500 dark:text-gray-400">
+                        {backtestResults.trades.length > 0 && 
+                          `${new Date(backtestResults.trades[0].entry_time).toLocaleDateString()} - 
+                           ${new Date(backtestResults.trades[backtestResults.trades.length-1].exit_time).toLocaleDateString()}`
+                        }
+                      </span>
+                    </h2>
+                    <StochasticOscillator chartData={backtestResults.chart_data} />
                   </div>
                   
                   <div className="bg-white dark:bg-gray-800/40 backdrop-blur-lg p-5 rounded-xl shadow-lg">
