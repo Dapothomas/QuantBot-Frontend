@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const TradeHistory = ({ trades, initialBalance = 10000 }) => {
   const [sortField, setSortField] = useState('entry_time');
-  const [sortDirection, setSortDirection] = useState('desc');
+  const [sortDirection, setSortDirection] = useState('asc');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [tradesWithBalance, setTradesWithBalance] = useState([]);
@@ -157,12 +157,12 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
         </div>
       </div>
       
-      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 max-h-[70vh] overflow-y-auto hover:shadow-lg transform hover:scale-[1.01]">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-800">
+          <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0 z-10">
             <tr>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
                 onClick={() => handleSort('entry_time')}
               >
                 <div className="flex items-center">
@@ -176,7 +176,7 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hidden sm:table-cell"
+                className="px-6 py-3 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hidden sm:table-cell"
                 onClick={() => handleSort('exit_time')}
               >
                 <div className="flex items-center">
@@ -190,7 +190,7 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hidden md:table-cell"
+                className="px-6 py-3 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hidden md:table-cell"
                 onClick={() => handleSort('entry_price')}
               >
                 <div className="flex items-center">
@@ -203,7 +203,7 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hidden md:table-cell"
+                className="px-6 py-3 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hidden md:table-cell"
                 onClick={() => handleSort('exit_price')}
               >
                 <div className="flex items-center">
@@ -216,7 +216,7 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
                 onClick={() => handleSort('profit')}
               >
                 <div className="flex items-center">
@@ -229,7 +229,7 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
                 onClick={() => handleSort('trade_result')}
               >
                 <div className="flex items-center">
@@ -242,7 +242,7 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
+                className="px-6 py-3 sm:px-4 sm:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer"
                 onClick={() => handleSort('runningBalance')}
               >
                 <div className="flex items-center">
@@ -258,27 +258,27 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
           </thead>
           <tbody className="bg-white dark:bg-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
             {currentItems.map((trade, index) => (
-              <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-600/30 transition-colors">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
+              <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-600/30 transition-colors duration-200 hover:shadow-md">
+                <td className="px-6 py-4 sm:px-4 sm:py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
                   <div className="md:hidden font-semibold text-xs text-gray-500 dark:text-gray-400">Entry:</div>
                   {formatDate(trade.entry_time)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 hidden sm:table-cell">
+                <td className="px-6 py-4 sm:px-4 sm:py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 hidden sm:table-cell">
                   {formatDate(trade.exit_time)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 hidden md:table-cell">
+                <td className="px-6 py-4 sm:px-4 sm:py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 hidden md:table-cell">
                   ${trade.entry_price.toFixed(2)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 hidden md:table-cell">
+                <td className="px-6 py-4 sm:px-4 sm:py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 hidden md:table-cell">
                   ${trade.exit_price.toFixed(2)}
                 </td>
-                <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
+                <td className={`px-6 py-4 sm:px-4 sm:py-3 whitespace-nowrap text-sm font-medium ${
                   trade.profit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                 }`}>
                   <div className="md:hidden font-semibold text-xs text-gray-500 dark:text-gray-400">Profit:</div>
                   ${trade.profit.toFixed(2)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                <td className="px-6 py-4 sm:px-4 sm:py-3 whitespace-nowrap text-sm">
                   <div className="md:hidden font-semibold text-xs text-gray-500 dark:text-gray-400">Result:</div>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     trade.trade_result === 'win' 
@@ -288,7 +288,7 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
                     {trade.trade_result.toUpperCase()}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 font-medium">
+                <td className="px-6 py-4 sm:px-4 sm:py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 font-medium">
                   <div className="md:hidden font-semibold text-xs text-gray-500 dark:text-gray-400">Balance:</div>
                   ${trade.runningBalance.toFixed(2)}
                 </td>
@@ -304,6 +304,16 @@ const TradeHistory = ({ trades, initialBalance = 10000 }) => {
           <span className="font-medium">Note:</span> Swipe left to see more details or rotate device to landscape view
         </div>
       </div>
+      
+      {/* Table information */}
+      {/* <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Hover over the table to enlarge it for better visibility</span>
+        </div>
+      </div> */}
       
       {/* Pagination */}
       <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm gap-4 sm:gap-0">

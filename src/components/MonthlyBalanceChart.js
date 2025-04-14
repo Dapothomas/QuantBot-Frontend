@@ -312,7 +312,7 @@ const MonthlyBalanceChart = ({ trades, initialBalance }) => {
       
       <div 
         className={`h-[400px] transition-all duration-300 ease-in-out
-                    ${isHovered ? 'transform scale-[1.03]' : ''}`}
+                    ${isHovered ? 'transform scale-[1.01]' : ''}`}
       >
         <Bar 
           ref={chartRef}
