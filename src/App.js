@@ -6,9 +6,7 @@ import TradeHistory from './components/TradeHistory';
 import StrategyInfo from './components/StrategyInfo';
 import MonthlyBalanceChart from './components/MonthlyBalanceChart';
 import StochasticOscillator from './components/StochasticOscillator';
-// No need for App.css import as we'll use Tailwind
 
-// Get API URL from environment variable or use default
 const API_URL = process.env.REACT_APP_API_URL || 'https://quantbot-backend.onrender.com';
 
 function App() {
@@ -19,7 +17,6 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Initialize dark mode based on user preference
   useEffect(() => {
     if (localStorage.theme === 'dark' || 
        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {

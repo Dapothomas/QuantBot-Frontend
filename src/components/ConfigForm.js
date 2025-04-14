@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PositionSizingInfo from './PositionSizingInfo';
 
-// Get API URL from environment variable or use default
 const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
 
 // Average asset prices for estimation
@@ -32,7 +31,6 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
     position_size_percentage: 90, // Default percentage of available balance (90%)
   });
   
-  // Tooltip descriptions for each field
   const tooltips = {
     data_source: "Select the cryptocurrency and time period for backtesting. Different periods have unique market conditions that may affect strategy performance.",
     initial_balance: "The starting capital for your backtest, in USDT. This simulates how much money you would have invested.",
@@ -44,7 +42,6 @@ const ConfigForm = ({ onRunBacktest, isLoading }) => {
   };
   
   useEffect(() => {
-    // Fetch available data sources
     fetch(`${API_URL}/api/available-data`)
       .then(response => response.json())
       .then(data => {

@@ -103,7 +103,7 @@ const StochasticOscillator = ({ chartData }) => {
     const oversoldLine = chart.addLineSeries({
       color: isDarkMode ? 'rgba(16, 185, 129, 0.5)' : 'rgba(16, 185, 129, 0.5)', 
       lineWidth: 1,
-      lineStyle: 2, // Dashed line
+      lineStyle: 2, 
     });
     
     // Format data for stochastic oscillator
