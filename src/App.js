@@ -266,7 +266,7 @@ function App() {
               )}
               
               {!backtestResults && !isLoading && !error && (
-                <div className="flex flex-col items-center justify-center h-64 bg-white dark:bg-gray-800/50 backdrop-blur-lg p-8 rounded-xl shadow-lg text-center">
+                <div style={{zIndex: 0}} className="flex flex-col items-center justify-center h-64 bg-white dark:bg-gray-800/50 backdrop-blur-lg p-8 rounded-xl shadow-lg text-center relative">
                   <svg className="w-16 h-16 text-indigo-500 dark:text-indigo-400 mb-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 13.2C3 12.1737 3 11.6605 3.10899 11.2195C3.37513 10.1175 4.1175 9.37513 5.21945 9.10899C5.66046 9 6.17372 9 7.2 9H16.8C17.8263 9 18.3395 9 18.7806 9.10899C19.8825 9.37513 20.6249 10.1175 20.891 11.2195C21 11.6605 21 12.1737 21 13.2V13.2C21 14.2263 21 14.7395 20.891 15.1806C20.6249 16.2825 19.8825 17.0249 18.7806 17.291C18.3395 17.4 17.8263 17.4 16.8 17.4H7.2C6.17372 17.4 5.66046 17.4 5.21945 17.291C4.1175 17.0249 3.37513 16.2825 3.10899 15.1806C3 14.7395 3 14.2263 3 13.2V13.2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M7 6L12 3L17 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
